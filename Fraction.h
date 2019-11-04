@@ -53,18 +53,19 @@ class Fraction {
     bool operator==(const Fraction &) const;    // Compare Frac == Frac
     optional<int> operator[](int) const;        // Component access Frac[i]
 
-#if I_DO_EXTRA_CREDIT
+/*#if I_DO_EXTRA_CREDIT
     // Implement these two OR add your own operator(s)
     optional<string> isRepeating() const;
     string operator()(int) const;
 #endif
+*/
 
   private:
     ostream &writeTo(ostream &) const;
     istream &readFrom(istream &);
     int wholeNum;
-	int numerator;
-	int denominator;
+	int numer;
+	int denom;
 	bool isPos;
 };
 

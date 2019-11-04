@@ -21,16 +21,29 @@ Fraction::Fraction(const Fraction &other) {}
 
 Fraction::Fraction(Fraction &&other) {}
 
-Fraction::Fraction(std::string s) {}
+Fraction::Fraction(std::string s) {
+	wholeNum = 0;
+	numer = 0;
+	denom = 0;
+	isPos = true;
+
+	// do this one first
+	// Need to parse out the negative
+	if(s[0]=='-')
+		isPos = false;
+	if (s.find('/') == std::string::npos){
+		this->wholeNum=std::stoi(s);
+	}
+}
 
 // Access functions
-int Fraction::whole() const { return -1; }
+int Fraction::whole() const { return (this->wholeNum); }
 
-int Fraction::numerator() const { return -1; }
+int Fraction::numerator() const { return (this->numer); }
 
-int Fraction::denominator() const { return -1; }
+int Fraction::denominator() const { return (this->denom); }
 
-bool Fraction::isPositive() const { return false; }
+bool Fraction::isPositive() const { return (this->isPos); }
 
 
 // Operator functions
