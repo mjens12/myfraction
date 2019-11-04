@@ -8,6 +8,8 @@ using std::optional;
 using std::ostream;
 using std::string;
 
+//https://cis.gvsu.edu/~dulimarh/vp/cs343/02-fraction.html
+
 class Fraction {
     friend ostream &operator<<(ostream &, const Fraction &);
     friend istream &operator>>(istream &, Fraction &);
@@ -60,6 +62,10 @@ class Fraction {
   private:
     ostream &writeTo(ostream &) const;
     istream &readFrom(istream &);
+    int wholeNum;
+	int numerator;
+	int denominator;
+	bool isPos;
 };
 
 /* Friend functions (non-member functions) */
