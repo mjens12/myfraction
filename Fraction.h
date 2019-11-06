@@ -11,7 +11,8 @@ using std::string;
 //https://cis.gvsu.edu/~dulimarh/vp/cs343/02-fraction.html
 
 class Fraction {
-    friend ostream &operator<<(ostream &, const Fraction &);
+    // Only two of these actually need to be friend functions
+	friend ostream &operator<<(ostream &, const Fraction &);
     friend istream &operator>>(istream &, Fraction &);
     friend Fraction operator+(int, const Fraction &);
     friend Fraction operator-(int, const Fraction &);
