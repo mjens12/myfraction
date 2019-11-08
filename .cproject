@@ -22,13 +22,30 @@
 					<folderInfo id="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.2144426492." name="/" resourcePath="">
 						<toolChain id="org.eclipse.linuxtools.cdt.autotools.core.toolChain.1810371280" name="GNU Autotools Toolchain" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolChain">
 							<targetPlatform id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform.934638216" isAbstract="false" name="GNU Autotools Target Platform" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform"/>
-							<builder id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.916921450" managedBuildOn="true" name="Autotools Makefile Generator.Build (GNU)" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder"/>
-							<tool id="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.1701788407" name="configure" superClass="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure"/>
+							<builder id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.916921450" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Autotools Makefile Generator" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder">
+								<outputEntries>
+									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
+								</outputEntries>
+							</builder>
+							<tool id="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.1701788407" name="configure" superClass="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure">
+								<option id="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name.1074949200" name="Name" superClass="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name" value="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.2144426492" valueType="string"/>
+							</tool>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen.695779962" name="autogen.sh" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen"/>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.1038754561" name="GCC C Compiler" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc">
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.983995355" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.27931582" name="GCC C++ Compiler" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp">
+								<option id="gnu.cpp.compiler.option.include.paths.291609762" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include\c++\mingw32&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include\c++&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include\c++\backward&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include-fixed&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include\c++\tr1&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include\c++\tr2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\lib\gcc\mingw32\8.2.0\include\c++\bits&quot;"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2123925970" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 						</toolChain>
@@ -58,15 +75,19 @@
 					<folderInfo id="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.324952928." name="/" resourcePath="">
 						<toolChain id="org.eclipse.linuxtools.cdt.autotools.core.toolChain.debug.1739063935" name="GNU Autotools Toolchain" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolChain.debug">
 							<targetPlatform id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform.debug.489798836" isAbstract="false" name="GNU Autotools Target Platform" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.targetPlatform.debug"/>
-							<builder id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.debug.1055064441" managedBuildOn="true" name="Autotools Makefile Generator.Debug (GNU)" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.debug"/>
+							<builder id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.debug.1055064441" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Autotools Makefile Generator" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.builder.debug"/>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.debug.1487658918" name="configure" superClass="org.eclipse.linuxtools.cdt.autotools.core.gnu.toolchain.tool.configure.debug">
-								<option defaultValue="CFLAGS=-g -O0" id="org.eclipse.linuxtools.cdt.autotools.core.option.configure.user.1138356714" superClass="org.eclipse.linuxtools.cdt.autotools.core.option.configure.user" valueType="string"/>
+								<option defaultValue="CFLAGS=-g -O0" id="org.eclipse.linuxtools.cdt.autotools.core.option.configure.user.1138356714" name="User-specified configuration options" superClass="org.eclipse.linuxtools.cdt.autotools.core.option.configure.user" valueType="string"/>
+								<option id="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name.1974979306" name="Name" superClass="org.eclipse.linuxtools.cdt.autotools.core.option.configure.name" value="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.324952928" valueType="string"/>
 							</tool>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen.debug.369313825" name="autogen.sh" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.autogen.debug"/>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.debug.1786252025" name="GCC C Compiler" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.debug">
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.42298680" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.debug.2079781761" name="GCC C++ Compiler" superClass="org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.debug">
+								<option id="gnu.cpp.compiler.option.include.paths.401560073" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\MinGW\mingw32&quot;"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.716872613" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 						</toolChain>
@@ -79,9 +100,30 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="myfraction.org.eclipse.linuxtools.cdt.autotools.core.projectType.14834986" name="GNU Autotools" projectType="org.eclipse.linuxtools.cdt.autotools.core.projectType"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug (GNU)">
+			<resource resourceType="PROJECT" workspacePath="/myfraction"/>
+		</configuration>
+		<configuration configurationName="Build (GNU)">
+			<resource resourceType="PROJECT" workspacePath="/myfraction"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.2144426492;org.eclipse.linuxtools.cdt.autotools.core.configuration.build.2144426492.;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.1038754561;cdt.managedbuild.tool.gnu.c.compiler.input.983995355">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.324952928;org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.324952928.;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.debug.2079781761;cdt.managedbuild.tool.gnu.cpp.compiler.input.716872613">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.324952928;org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.324952928.;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.debug.1786252025;cdt.managedbuild.tool.gnu.c.compiler.input.42298680">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.2144426492;org.eclipse.linuxtools.cdt.autotools.core.configuration.build.2144426492.;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gpp.27931582;cdt.managedbuild.tool.gnu.cpp.compiler.input.2123925970">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

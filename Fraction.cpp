@@ -6,99 +6,212 @@
 using namespace std;
 
 /* Friend functions */
-Fraction operator+(int val, const Fraction &f) { return {}; }
+Fraction operator+(int val, const Fraction &f) {
+	return {};
+}
 
-Fraction operator-(int val, const Fraction &f) { return {}; }
+Fraction operator-(int val, const Fraction &f) {
+	return {};
+}
 
-Fraction operator*(int val, const Fraction &f) { return {}; }
+Fraction operator*(int val, const Fraction &f) {
+	return {};
+}
 
 //Constructors
-Fraction::Fraction() {}
+Fraction::Fraction() {
+	this->wholeNum = 0;
+	this->numer = 0;
+	this->denom = 0;
+	this->isPos = true;
+}
 
-Fraction::Fraction(int v) {}
+Fraction::Fraction(int v) {
+	if (v <= 0){
+		this->isPos = false;
+	}
+	this->wholeNum = abs(v);
+	this->numer = 0;
+	this->denom = 0;
+	this->isPos = true;
+}
 
-Fraction::Fraction(const Fraction &other) {}
+Fraction::Fraction(const Fraction &other) {
+}
 
-Fraction::Fraction(Fraction &&other) {}
+Fraction::Fraction(Fraction &&other) {
+}
 
 Fraction::Fraction(std::string s) {
-	wholeNum = 0;
-	numer = 0;
-	denom = 0;
-	isPos = true;
+	this->wholeNum = 0;
+	this->numer = 0;
+	this->denom = 0;
+	this->isPos = true;
 
-	// do this one first
-	// Need to parse out the negative
-	if(s[0]=='-')
+	if (s[0] == '-') {
 		isPos = false;
-	if (s.find('/') == std::string::npos){
-		this->wholeNum=std::stoi(s);
+		s = s.substr(1);
 	}
+
+	if (s.find('/') == string::npos) {
+		this->wholeNum = stoi(s);
+		break;
+	}
+
+	if (s.find(' ') == std::string::npos && s.find('/') != string::npos) {
+		int pos = s.find("/");
+		this->numer = stoi(s.substr(0, pos));
+		this->denom = stoi(s.substr(pos + 1));
+	}
+
+	if (s.find(' ') != std::string::npos && s.find('/') != string::npos) {
+		int pos1 = s.find(" ");
+		int pos2 = s.find("/");
+		this->wholeNum = stoi(s.substr(0, pos1));
+		this->numer = stoi(s.substr(pos1 + 1, pos2));
+		this->denom = stoi(s.substr(pos2 + 1));
+	}
+
 }
 
 // Access functions
-int Fraction::whole() const { return (this->wholeNum); }
-
-int Fraction::numerator() const { return (this->numer); }
-
-int Fraction::denominator() const { return (this->denom); }
-
-bool Fraction::isPositive() const { return (this->isPos); }
-
-
-// Operator functions
-Fraction& Fraction::operator=(const Fraction &other) { return *this; }
-
-Fraction& Fraction::operator=(Fraction &&other) { return *this; }
-
-Fraction Fraction::operator+(int num) const { return {}; }
-
-Fraction Fraction::operator+(const Fraction &other) const { return {}; }
-
-Fraction Fraction::operator-() const { return {}; }
-
-Fraction Fraction::operator-(int val) const { return {}; }
-
-Fraction Fraction::operator-(const Fraction &other) const { return {}; }
-
-Fraction Fraction::operator*(int val) const { return {}; }
-
-Fraction Fraction::operator*(const Fraction &other) const { return {}; }
-
-optional<int> Fraction::operator[](int pos) const { return {}; }
-
-bool Fraction::operator<(const Fraction &other) const { return {}; }
-
-bool Fraction::operator==(const Fraction &other) const { return {}; }
-
-
-// Conversion functions
-void Fraction::makeProper() {}
-
-Fraction Fraction::toProper() const { return {}; }
-
-void Fraction::reduce() {}
-
-Fraction Fraction::toReduced() const { return {}; }
-
-ostream &Fraction::writeTo(ostream &os) const { return os; }
-
-istream &Fraction::readFrom(istream &sr) /*throw(std::invalid_argument) */ {
-    return sr;
+int Fraction::whole() const {
+	return (this->wholeNum);
 }
 
-bool Fraction::isReduced() const { return {}; }
+int Fraction::numerator() const {
+	return (this->numer);
+}
 
-bool Fraction::isProper() const { return {}; }
+int Fraction::denominator() const {
+	return (this->denom);
+}
 
+bool Fraction::isPositive() const {
+	return (this->isPos);
+}
+
+// Operator functions
+Fraction& Fraction::operator=(const Fraction &other) {
+	return *this;
+}
+
+Fraction& Fraction::operator=(Fraction &&other) {
+	return *this;
+}
+
+Fraction Fraction::operator+(int num) const {
+	return {};
+}
+
+Fraction Fraction::operator+(const Fraction &other) const {
+	return {};
+}
+
+Fraction Fraction::operator-() const {
+	return {};
+}
+
+Fraction Fraction::operator-(int val) const {
+	return {};
+}
+
+Fraction Fraction::operator-(const Fraction &other) const {
+	return {};
+}
+
+Fraction Fraction::operator*(int val) const {
+	return {};
+}
+
+Fraction Fraction::operator*(const Fraction &other) const {
+	return {};
+}
+
+optional<int> Fraction::operator[](int pos) const {
+	return {};
+}
+
+bool Fraction::operator<(const Fraction &other) const {
+	return {};
+}
+
+bool Fraction::operator==(const Fraction &other) const {
+	return {};
+}
+
+// Conversion functions
+void Fraction::makeProper() {
+	reduce();
+	if (this->numer >= this->denom) {
+		int temp1 = this->numer / this->denom;
+		int temp2 = this->numer % this->denom;
+		this->wholeNum = this->wholeNum + temp1;
+		this->numer = temp2;
+	}
+}
+
+Fraction Fraction::toProper() const {
+	Fraction temp = toReduced();
+	if (temp.numer >= temp.denom) {
+		int temp1 = temp.numer / temp.denom;
+		int temp2 = temp.numer % temp.denom;
+		temp.wholeNum = temp.wholeNum + temp1;
+		temp.numer = temp2;
+	}
+	return {temp};
+}
+
+void Fraction::reduce() {
+	int tempGCD = __gcd(this->numer, this->denom);
+	this->numer = (this->numer / tempGCD);
+	this->denom = (this->denom / tempGCD);
+}
+
+Fraction Fraction::toReduced() const {
+	Fraction temp = Fraction();
+	int tempGCD = __gcd(this->numer, this->denom);
+	temp.numer = (this->numer / tempGCD);
+	temp.denom = (this->denom / tempGCD);
+	return {temp};
+}
+
+ostream &Fraction::writeTo(ostream &os) const {
+	return os;
+}
+
+istream &Fraction::readFrom(istream &sr) /*throw(std::invalid_argument) */{
+	return sr;
+}
+
+bool Fraction::isReduced() const {
+	if ((__gcd(this->numer, this->denom)) == 1) {
+		return {true};
+	}
+	return {false};
+}
+
+bool Fraction::isProper() const {
+	if (((__gcd(this->numer, this->denom)) == 1)
+			&& (this->numer < this->denom)) {
+		return {true};
+	}
+	return {false};
+}
 
 // Private input and output methods
-ostream &operator<<(ostream &os, const Fraction &f) { return os; }
+ostream &operator<<(ostream &os, const Fraction &f) {
+	return os;
+}
 
-istream &operator>>(istream &s, Fraction &f) { return s; }
+istream &operator>>(istream &s, Fraction &f) {
+	return s;
+}
 
-#if I_DO_EXTRA_CREDIT
-optional<string> Fraction::isRepeating() const { return {}; }
+/*
+ #if I_DO_EXTRA_CREDIT
+ optional<string> Fraction::isRepeating() const { return {}; }
 
-string Fraction::operator()(int len) const { return {}; }
-#endif
+ string Fraction::operator()(int len) const { return {}; }
+ #endif
+ */
