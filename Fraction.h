@@ -10,6 +10,8 @@ using std::string;
 
 //https://cis.gvsu.edu/~dulimarh/vp/cs343/02-fraction.html
 
+
+// Each non member function resolves to one call to a membet function
 class Fraction {
     // Only two of these actually need to be friend functions
 	friend ostream &operator<<(ostream &, const Fraction &);
@@ -72,5 +74,6 @@ class Fraction {
 
 /* Friend functions (non-member functions) */
 ostream &operator<<(ostream &, const Fraction &);
+// It returns the same istream so that you can chain the operators
 istream &operator>>(istream &, Fraction &);
 Fraction operator+(int, const Fraction &); // Add: int + Fraction

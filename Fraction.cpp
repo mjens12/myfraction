@@ -159,7 +159,7 @@ Fraction Fraction::toProper() const {
 		temp.wholeNum = temp.wholeNum + temp1;
 		temp.numer = temp2;
 	}
-	return {temp};
+	return (temp);
 }
 
 void Fraction::reduce() {
@@ -169,17 +169,21 @@ void Fraction::reduce() {
 }
 
 Fraction Fraction::toReduced() const {
-	Fraction temp = Fraction();
+	// Use this syntax for declaring Fractions
+	Fraction temp;
 	int tempGCD = __gcd(this->numer, this->denom);
 	temp.numer = (this->numer / tempGCD);
 	temp.denom = (this->denom / tempGCD);
-	return {temp};
+	return (temp);
 }
 
 ostream &Fraction::writeTo(ostream &os) const {
 	return os;
 }
 
+
+// You don't want to consume things outside of brackets
+// read character by character, if the first char isn't a left bracket throw an error
 istream &Fraction::readFrom(istream &sr) /*throw(std::invalid_argument) */{
 	return sr;
 }
@@ -205,7 +209,7 @@ ostream &operator<<(ostream &os, const Fraction &f) {
 }
 
 istream &operator>>(istream &s, Fraction &f) {
-	return s;
+	return (f.readFrom(s));
 }
 
 /*
