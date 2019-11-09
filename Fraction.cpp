@@ -269,6 +269,7 @@ bool Fraction::isReduced() const {
 	return (false);
 }
 
+//Maybe a mistake here in the tests
 bool Fraction::isProper() const {
 	/*if ((((__gcd(this->numer, this->denom)) == 1)
 			&& (this->numer < this->denom)) | ((this->numer == 0))) {
