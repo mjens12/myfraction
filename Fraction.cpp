@@ -22,18 +22,21 @@ Fraction operator*(int val, const Fraction &f) {
 Fraction::Fraction() {
 	this->wholeNum = 0;
 	this->numer = 0;
-	this->denom = 0;
+	this->denom = 1;
 	this->isPos = true;
 }
 
 Fraction::Fraction(int v) {
-	if (v <= 0) {
+	if (v < 0) {
 		this->isPos = false;
+	}
+	if (v >= 0) {
+		this->isPos = true;
 	}
 	this->wholeNum = abs(v);
 	this->numer = 0;
-	this->denom = 0;
-	this->isPos = true;
+	this->denom = 1;
+
 }
 
 Fraction::Fraction(const Fraction &other) {
@@ -53,7 +56,7 @@ Fraction::Fraction(Fraction &&other) {
 Fraction::Fraction(std::string s) {
 	this->wholeNum = 0;
 	this->numer = 0;
-	this->denom = 0;
+	this->denom = 1;
 	this->isPos = true;
 
 	if (s[0] == '-') {
@@ -63,7 +66,7 @@ Fraction::Fraction(std::string s) {
 
 	if (s.find('/') == string::npos) {
 		this->wholeNum = stoi(s);
-		break;
+		return;
 	}
 
 	if (s.find(' ') == std::string::npos && s.find('/') != string::npos) {
@@ -79,7 +82,8 @@ Fraction::Fraction(std::string s) {
 		this->numer = stoi(s.substr(pos1 + 1, pos2));
 		this->denom = stoi(s.substr(pos2 + 1));
 	}
-
+	if (this->denom == 0)
+		throw std::invalid_argument("No zeroes as denominators allowed!");
 }
 
 // Access functions
@@ -118,7 +122,7 @@ Fraction& Fraction::operator=(Fraction &&other) {
 
 Fraction Fraction::operator+(int num) const {
 	Fraction temp;
-	temp = this;
+	temp = *this;
 	temp.wholeNum += num;
 	return (temp);
 }
@@ -133,9 +137,9 @@ Fraction Fraction::operator-() const {
 
 Fraction Fraction::operator-(int val) const {
 	Fraction temp;
-	temp = this;
+	temp = *this;
 	temp.wholeNum -= val;
-	if(temp.wholeNum < 0){
+	if (temp.wholeNum < 0) {
 		temp.wholeNum = abs(temp.wholeNum);
 		temp.isPos = false;
 	}
@@ -150,15 +154,15 @@ Fraction Fraction::operator*(int val) const {
 	Fraction temp;
 	temp.numer = this->numer * val;
 	temp = temp.toReduced();
-	if(val < 0 && this->isPos == true)
+	if (val < 0 && this->isPos == true)
 		temp.isPos = false;
-	if(val < 0 && this->isPos == false)
+	if (val < 0 && this->isPos == false)
 		temp.isPos = true;
-	if(val > 0 && this->isPos == false)
+	if (val > 0 && this->isPos == false)
 		temp.isPos = false;
-	if(val > 0 && this->isPos == true)
+	if (val > 0 && this->isPos == true)
 		temp.isPos = true;
-	if (val == 0){
+	if (val == 0) {
 		temp.wholeNum = 0;
 		temp.numer = 0;
 		temp.denom = 0;
@@ -169,7 +173,7 @@ Fraction Fraction::operator*(int val) const {
 
 Fraction Fraction::operator*(const Fraction &other) const {
 	Fraction temp;
-	temp = this;
+	temp = *this;
 
 	return {};
 }
@@ -266,8 +270,12 @@ bool Fraction::isReduced() const {
 }
 
 bool Fraction::isProper() const {
-	if (((__gcd(this->numer, this->denom)) == 1)
-			&& (this->numer < this->denom)) {
+	/*if ((((__gcd(this->numer, this->denom)) == 1)
+			&& (this->numer < this->denom)) | ((this->numer == 0))) {
+		return (true);
+	}
+	*/
+	if((this->numer < this->denom) | (this->numer==0)){
 		return (true);
 	}
 	return (false);
