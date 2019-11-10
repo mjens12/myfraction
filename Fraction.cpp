@@ -122,17 +122,98 @@ Fraction& Fraction::operator=(Fraction &&other) {
 
 Fraction Fraction::operator+(int num) const {
 	Fraction temp;
+	int tempInt;
 	temp = *this;
-	temp.wholeNum += num;
+	if (temp.isPos == false) {
+		tempInt = 0 - temp.wholeNum;
+	} else
+		tempInt = temp.wholeNum;
+	tempInt = num + tempInt;
+	if (tempInt < 0) {
+		temp.wholeNum = abs(tempInt);
+		temp.isPos = false;
+	} else
+		temp.wholeNum = tempInt;
+
+	/*if (temp.isPos == false && num > 0) {
+	 if (num >= temp.wholeNum) {
+	 temp.wholeNum -= num;
+	 temp.wholeNum = abs(temp.wholeNum);
+	 temp.isPos = true;
+	 }
+	 if (num < temp.wholeNum) {
+	 temp.wholeNum -= num;
+	 }
+	 }
+	 if (temp.isPos == true && num < 0) {
+	 if (abs(num) > temp.isPos) {
+	 temp.wholeNum -= num;
+	 temp.wholeNum = abs(temp.wholeNum);
+	 temp.isPos = true;
+	 }
+	 if (abs(num) <= temp.isPos) {
+	 temp.wholeNum -= num;
+	 }
+	 }
+	 if (temp.isPos == false && num < 0) {
+	 temp.wholeNum += abs(num);
+	 }
+
+	 else {
+	 temp.wholeNum += num;
+	 }
+	 */
+
 	return (temp);
 }
 
 Fraction Fraction::operator+(const Fraction &other) const {
-	return {};
+	Fraction temp1;
+	Fraction temp2;
+
+	temp1.denom = this->denom * other.denom;
+	temp2.denom = this->denom * other.denom;
+	temp1.numer *= other.denom;
+	temp2.numer *= this->denom;
+	temp1.numer += this->wholeNum * temp1.denom;
+	temp2.numer += other.wholeNum * temp2.denom;
+	if (this->isPos == false)
+		temp1.numer *= -1;
+	if (other.isPos == false)
+		temp2.numer *= -1;
+	temp1.numer += temp2.numer;
+	if (temp1.numer < 0) {
+		temp1.isPos = false;
+		temp1.numer = abs(temp1.numer);
+	}
+
+	/*if ((other.isPos == true && this->isPos == true)
+	 | (other.isPos == false && this->isPos == false)) {
+	 temp.wholeNum = this->wholeNum + other.wholeNum;
+	 temp.denom = this->denom * other.denom;
+	 temp.numer = (this->numer * other.denom) + (other.numer * this->denom);
+	 temp.toProper();
+	 }
+	 if ((other.isPos == false && this->isPos == true)
+	 | (other.isPos == true && this->isPos == false)) {
+	 temp.wholeNum = this->wholeNum - other.wholeNum;
+	 temp.denom = this->denom * other.denom;
+	 temp.numer = (this->numer * other.denom) + (other.numer * this->denom);
+	 temp.toProper();
+	 }
+	 */
+	temp1.toProper();
+	return {temp1};
 }
 
 Fraction Fraction::operator-() const {
-	return {};
+	Fraction temp;
+	temp = *this;
+	if (temp.isPos == true)
+		temp.isPos = false;
+	if (temp.isPos == false)
+		temp.isPos = true;
+	return {temp};
 }
 
 Fraction Fraction::operator-(int val) const {
@@ -147,13 +228,32 @@ Fraction Fraction::operator-(int val) const {
 }
 
 Fraction Fraction::operator-(const Fraction &other) const {
-	return {};
+	Fraction temp1;
+	Fraction temp2;
+
+	temp1.denom = this->denom * other.denom;
+	temp2.denom = this->denom * other.denom;
+	temp1.numer *= other.denom;
+	temp2.numer *= this->denom;
+	temp1.numer += this->wholeNum * temp1.denom;
+	temp2.numer += other.wholeNum * temp2.denom;
+	if (this->isPos == false)
+		temp1.numer *= -1;
+	if (other.isPos == false)
+		temp2.numer *= -1;
+	temp1.numer -= temp2.numer;
+	if (temp1.numer < 0) {
+		temp1.isPos = false;
+		temp1.numer = abs(temp1.numer);
+	}
+	temp1.toProper();
+	return {temp1};
 }
 
 Fraction Fraction::operator*(int val) const {
 	Fraction temp;
 	temp.numer = this->numer * val;
-	temp = temp.toReduced();
+	temp = temp.toProper();
 	if (val < 0 && this->isPos == true)
 		temp.isPos = false;
 	if (val < 0 && this->isPos == false)
@@ -168,14 +268,25 @@ Fraction Fraction::operator*(int val) const {
 		temp.denom = 0;
 		temp.isPos = true;
 	}
+	temp.toProper;
 	return (temp);
 }
 
 Fraction Fraction::operator*(const Fraction &other) const {
-	Fraction temp;
-	temp = *this;
-
-	return {};
+	Fraction temp1;
+	Fraction temp2;
+	temp1 = *this;
+	temp2 = other;
+	temp1.numer += temp1.wholeNum * temp1.denom;
+	temp2.numer += temp2.wholeNum * temp2.denom;
+	temp1.numer = temp1.numer * temp2.numer;
+	temp1.denom = temp1.denom * temp2.denom;
+	if (temp1.isPos == temp2.isPos)
+		temp1.isPos = true;
+	else
+		temp1.isPos = false;
+	temp1.toProper();
+	return {temp1};
 }
 
 optional<int> Fraction::operator[](int pos) const {
@@ -185,8 +296,8 @@ optional<int> Fraction::operator[](int pos) const {
 bool Fraction::operator<(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
-	temp1 = this->toReduced();
-	temp2 = other.toReduced();
+	temp1 = this->toProper();
+	temp2 = other.toProper();
 	temp1.denom = this->denom * other.denom;
 	temp2.denom = this->denom * other.denom;
 	temp1.numer *= other.denom;
@@ -207,8 +318,8 @@ bool Fraction::operator<(const Fraction &other) const {
 bool Fraction::operator==(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
-	temp1 = this->toReduced();
-	temp2 = other.toReduced();
+	temp1 = this->toProper();
+	temp2 = other.toProper();
 	if (temp1.isPos == temp2.isPos && temp1.numer == temp2.numer
 			&& temp1.denom == temp2.denom && temp1.wholeNum == temp2.wholeNum)
 		return (true);
@@ -272,11 +383,11 @@ bool Fraction::isReduced() const {
 //Maybe a mistake here in the tests
 bool Fraction::isProper() const {
 	/*if ((((__gcd(this->numer, this->denom)) == 1)
-			&& (this->numer < this->denom)) | ((this->numer == 0))) {
-		return (true);
-	}
-	*/
-	if((this->numer < this->denom) | (this->numer==0)){
+	 && (this->numer < this->denom)) | ((this->numer == 0))) {
+	 return (true);
+	 }
+	 */
+	if ((this->numer < this->denom) | (this->numer == 0)) {
 		return (true);
 	}
 	return (false);
