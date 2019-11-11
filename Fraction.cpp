@@ -416,6 +416,8 @@ ostream& Fraction::writeTo(ostream &os) const {
 	if (this->wholeNum != 0) {
 		temp += to_string(this->wholeNum);
 	}
+	if (this->wholeNum == 0 && this->numer == 0)
+		temp += '0';
 	if ((this->wholeNum != 0) && (this->numer != 0))
 		temp += ' ';
 	if (this->numer != 0) {
@@ -431,27 +433,53 @@ ostream& Fraction::writeTo(ostream &os) const {
 // You don't want to consume things outside of brackets
 // read character by character, if the first char isn't a left bracket throw an error
 istream& Fraction::readFrom(istream &sr) {
-	Fraction temp;
-	string st;
-	char ch;
-	int i;
+	this->wholeNum = 0;
+	this->numer = 0;
+	this->denom = 1;
+	this->isPos = true;
 
-	ch = sr.get();
-	if (ch != '[')
-		throw std::invalid_argument("Must start with [ !");
+	string st;
+	int tempWhole = 0;
+	int tempNum = 0;
+	int TempDenom = 0;
+
+	char ch;
+	int i = 0;
+
+	//"text [3]234"
+	while (sr.peek() != '[') {
+		sr.get();
+		if (sr.fail())
+			throw std::invalid_argument("Must start with [ !");
+	}
 
 	sr.get();
+	ch = sr.get();
 	if (ch == '-') {
 		this->isPos = false;
 	}
 
 	while (sr.peek() != '/') {
+		if (sr.peek() == ']')
+			break;
 		ch = sr.get();
+
+		if (sr.fail())
+			break;
 		st += ch;
 	}
-	i = stoi(st);
+	//For single char whole nums
+	if (st.length()==0) {
+		ch -= 48;
+		tempWhole = ch;
+	}
+	else{
+	i=stoi(st);
+	tempWhole = i;
+	}
+	this->wholeNum = tempWhole;
 
-	return sr;
+	return (sr);
 }
 
 bool Fraction::isReduced() const {
@@ -462,9 +490,8 @@ bool Fraction::isReduced() const {
 }
 
 bool Fraction::isProper() const {
-	cout << numer;
-	cout << denom;
-	if (this->numer >= this->denom)
+	if ((this->numer >= this->denom)
+			| (this->wholeNum != 0 && this->numer == 0))
 		return (false);
 	return (true);
 }
