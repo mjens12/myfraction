@@ -5,7 +5,9 @@
 
 using namespace std;
 
+//Use curly brackets when using a constructor
 /* Friend functions */
+// Just call the other functions here
 Fraction operator+(int val, const Fraction &f) {
 	Fraction temp;
 	if (f.isPos == false)
@@ -326,6 +328,7 @@ Fraction Fraction::operator*(const Fraction &other) const {
 	return {temp1};
 }
 
+// To return nothing just use return {}
 optional<int> Fraction::operator[](int pos) const {
 	return {};
 }
