@@ -7,15 +7,42 @@ using namespace std;
 
 /* Friend functions */
 Fraction operator+(int val, const Fraction &f) {
-	return {};
+	Fraction temp;
+	if (f.isPos == false)
+		temp.wholeNum = 0 - f.wholeNum;
+	else
+		temp.wholeNum = f.wholeNum;
+
+	temp.wholeNum = temp.wholeNum + val;
+
+	if (temp.wholeNum < 0) {
+		temp.isPos = false;
+		temp.wholeNum = abs(temp.wholeNum);
+	}
+	return {temp};
 }
 
 Fraction operator-(int val, const Fraction &f) {
-	return {};
+	Fraction temp;
+
+	if (f.isPos == false)
+		temp.wholeNum = 0 - f.wholeNum;
+	else
+		temp.wholeNum = f.wholeNum;
+
+	temp.wholeNum = val - temp.wholeNum;
+
+	if (temp.wholeNum < 0) {
+		temp.isPos = false;
+		temp.wholeNum = abs(temp.wholeNum);
+	}
+	return {temp};
 }
 
 Fraction operator*(int val, const Fraction &f) {
-	return {};
+	Fraction temp;
+
+	return {temp};
 }
 
 //Constructors
@@ -170,16 +197,18 @@ Fraction Fraction::operator+(int num) const {
 Fraction Fraction::operator+(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
+	temp1 = *this;
+	temp2 = other;
 
-	temp1.denom = this->denom * other.denom;
-	temp2.denom = this->denom * other.denom;
-	temp1.numer *= other.denom;
-	temp2.numer *= this->denom;
-	temp1.numer += this->wholeNum * temp1.denom;
-	temp2.numer += other.wholeNum * temp2.denom;
-	if (this->isPos == false)
+	temp1.numer *= temp2.denom;
+	temp2.numer *= temp1.denom;
+	temp1.denom = temp1.denom * temp2.denom;
+	temp2.denom = temp1.denom * temp2.denom;
+	temp1.numer += temp1.wholeNum * temp1.denom;
+	temp2.numer += temp2.wholeNum * temp2.denom;
+	if (temp1.isPos == false)
 		temp1.numer *= -1;
-	if (other.isPos == false)
+	if (temp2.isPos == false)
 		temp2.numer *= -1;
 	temp1.numer += temp2.numer;
 	if (temp1.numer < 0) {
@@ -202,7 +231,9 @@ Fraction Fraction::operator+(const Fraction &other) const {
 	 temp.toProper();
 	 }
 	 */
-	temp1.toProper();
+
+	temp1 = temp1.toReduced();
+	temp1 = temp1.toProper();
 	return {temp1};
 }
 
@@ -219,22 +250,28 @@ Fraction Fraction::operator-() const {
 Fraction Fraction::operator-(int val) const {
 	Fraction temp;
 	temp = *this;
-	temp.wholeNum -= val;
+
+	if (temp.isPos == false)
+		temp.wholeNum = 0 - temp.wholeNum;
+
+	temp.wholeNum = temp.wholeNum - val;
+
 	if (temp.wholeNum < 0) {
-		temp.wholeNum = abs(temp.wholeNum);
 		temp.isPos = false;
+		temp.wholeNum = abs(temp.wholeNum);
 	}
-	return (temp);
+
+	return {temp};
 }
 
 Fraction Fraction::operator-(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
 
-	temp1.denom = this->denom * other.denom;
-	temp2.denom = this->denom * other.denom;
 	temp1.numer *= other.denom;
 	temp2.numer *= this->denom;
+	temp1.denom = this->denom * other.denom;
+	temp2.denom = this->denom * other.denom;
 	temp1.numer += this->wholeNum * temp1.denom;
 	temp2.numer += other.wholeNum * temp2.denom;
 	if (this->isPos == false)
@@ -265,10 +302,10 @@ Fraction Fraction::operator*(int val) const {
 	if (val == 0) {
 		temp.wholeNum = 0;
 		temp.numer = 0;
-		temp.denom = 0;
+		temp.denom = 1;
 		temp.isPos = true;
 	}
-	temp.toProper;
+	temp.toProper();
 	return (temp);
 }
 
@@ -328,23 +365,31 @@ bool Fraction::operator==(const Fraction &other) const {
 
 // Conversion functions
 void Fraction::makeProper() {
-	reduce();
 	if (this->numer >= this->denom) {
 		int temp1 = this->numer / this->denom;
 		int temp2 = this->numer % this->denom;
+		if ((this->numer % this->denom) == 0) {
+			this->denom = 1;
+			this->numer = 0;
+		}
 		this->wholeNum = this->wholeNum + temp1;
 		this->numer = temp2;
 	}
 }
 
 Fraction Fraction::toProper() const {
-	Fraction temp = toReduced();
+	Fraction temp = *this;
 	if (temp.numer >= temp.denom) {
 		int temp1 = temp.numer / temp.denom;
 		int temp2 = temp.numer % temp.denom;
 		temp.wholeNum = temp.wholeNum + temp1;
 		temp.numer = temp2;
 	}
+	if ((temp.numer % temp.denom) == 0) {
+		temp.denom = 1;
+		temp.numer = 0;
+	}
+
 	return (temp);
 }
 
@@ -364,12 +409,48 @@ Fraction Fraction::toReduced() const {
 }
 
 ostream& Fraction::writeTo(ostream &os) const {
+	string temp;
+	temp += '[';
+	if (this->isPos == false)
+		temp += '-';
+	if (this->wholeNum != 0) {
+		temp += to_string(this->wholeNum);
+	}
+	if ((this->wholeNum != 0) && (this->numer != 0))
+		temp += ' ';
+	if (this->numer != 0) {
+		temp += to_string(this->numer);
+		temp += '/';
+		temp += to_string(this->denom);
+	}
+	temp += ']';
+	os << temp;
 	return os;
 }
 
 // You don't want to consume things outside of brackets
 // read character by character, if the first char isn't a left bracket throw an error
-istream& Fraction::readFrom(istream &sr) /*throw(std::invalid_argument) */{
+istream& Fraction::readFrom(istream &sr) {
+	Fraction temp;
+	string st;
+	char ch;
+	int i;
+
+	ch = sr.get();
+	if (ch != '[')
+		throw std::invalid_argument("Must start with [ !");
+
+	sr.get();
+	if (ch == '-') {
+		this->isPos = false;
+	}
+
+	while (sr.peek() != '/') {
+		ch = sr.get();
+		st += ch;
+	}
+	i = stoi(st);
+
 	return sr;
 }
 
@@ -380,22 +461,17 @@ bool Fraction::isReduced() const {
 	return (false);
 }
 
-//Maybe a mistake here in the tests
 bool Fraction::isProper() const {
-	/*if ((((__gcd(this->numer, this->denom)) == 1)
-	 && (this->numer < this->denom)) | ((this->numer == 0))) {
-	 return (true);
-	 }
-	 */
-	if ((this->numer < this->denom) | (this->numer == 0)) {
-		return (true);
-	}
-	return (false);
+	cout << numer;
+	cout << denom;
+	if (this->numer >= this->denom)
+		return (false);
+	return (true);
 }
 
 // Private input and output methods
 ostream& operator<<(ostream &os, const Fraction &f) {
-	return os;
+	return f.writeTo(os);
 }
 
 istream& operator>>(istream &s, Fraction &f) {
