@@ -454,28 +454,31 @@ istream& Fraction::readFrom(istream &sr) {
 	}
 
 	sr.get();
-	ch = sr.get();
-	if (ch == '-') {
-		this->isPos = false;
-	}
+	//ch = sr.get();
 
 	while (sr.peek() != '/') {
-		if (sr.peek() == ']')
-			break;
+
 		ch = sr.get();
+		if (ch == '-') {
+			this->isPos = false;
+			ch = sr.get();
+		}
 
 		if (sr.fail())
 			break;
 		st += ch;
+		if (sr.peek() == ']') {
+			sr.get();
+			break;
+		}
 	}
 	//For single char whole nums
-	if (st.length()==0) {
+	if (st.length() == 0) {
 		ch -= 48;
 		tempWhole = ch;
-	}
-	else{
-	i=stoi(st);
-	tempWhole = i;
+	} else {
+		i = stoi(st);
+		tempWhole = i;
 	}
 	this->wholeNum = tempWhole;
 
@@ -498,7 +501,7 @@ bool Fraction::isProper() const {
 
 // Private input and output methods
 ostream& operator<<(ostream &os, const Fraction &f) {
-	return f.writeTo(os);
+	return (f.writeTo(os));
 }
 
 istream& operator>>(istream &s, Fraction &f) {
