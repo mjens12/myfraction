@@ -5,9 +5,7 @@
 
 using namespace std;
 
-//Use curly brackets when using a constructor
-/* Friend functions */
-// Just call the other functions here
+// Calls the fraction plus integer method
 Fraction operator+(int val, const Fraction &f) {
 	Fraction temp;
 	temp = f;
@@ -15,6 +13,7 @@ Fraction operator+(int val, const Fraction &f) {
 	return (temp);
 }
 
+// Calls the fraction minus integer method
 Fraction operator-(int val, const Fraction &f) {
 	Fraction temp;
 	temp = f;
@@ -26,6 +25,7 @@ Fraction operator-(int val, const Fraction &f) {
 	return (temp);
 }
 
+// Calls the fraction times integer method
 Fraction operator*(int val, const Fraction &f) {
 	Fraction temp;
 	temp = f;
@@ -68,6 +68,7 @@ Fraction::Fraction(Fraction &&other) {
 	this->wholeNum = std::move(other.wholeNum);
 }
 
+// Parses out the passed string into a fraction
 Fraction::Fraction(std::string s) {
 	this->wholeNum = 0;
 	this->numer = 0;
@@ -118,7 +119,7 @@ bool Fraction::isPositive() const {
 	return (this->isPos);
 }
 
-// Operator functions
+// Copies one fraction into another
 Fraction& Fraction::operator=(const Fraction &other) {
 	this->isPos = other.isPos;
 	this->numer = other.numer;
@@ -127,6 +128,7 @@ Fraction& Fraction::operator=(const Fraction &other) {
 	return (*this);
 }
 
+// Moves fraction data from one to another (if there had been any non primitive data in the fractions)
 Fraction& Fraction::operator=(Fraction &&other) {
 	this->isPos = std::move(other.isPos);
 	this->numer = std::move(other.numer);
@@ -135,6 +137,7 @@ Fraction& Fraction::operator=(Fraction &&other) {
 	return (*this);
 }
 
+// Converts the fraction and int into similar denoms and adds them
 Fraction Fraction::operator+(int num) const {
 	Fraction temp1;
 	Fraction temp2;
@@ -164,6 +167,7 @@ Fraction Fraction::operator+(int num) const {
 	return (temp1);
 }
 
+// Converts both fractions into similar denoms and adds them
 Fraction Fraction::operator+(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
@@ -192,6 +196,7 @@ Fraction Fraction::operator+(const Fraction &other) const {
 	return (temp1);
 }
 
+// Converts the fraction's isPos to the opposite
 Fraction Fraction::operator-() const {
 	Fraction temp;
 	temp = *this;
@@ -202,6 +207,7 @@ Fraction Fraction::operator-() const {
 	return (temp);
 }
 
+// Converts the fraction and int into similar denoms and subtracts them
 Fraction Fraction::operator-(int val) const {
 	Fraction temp1;
 	Fraction temp2;
@@ -231,6 +237,7 @@ Fraction Fraction::operator-(int val) const {
 	return (temp1);
 }
 
+// Converts the two fractions into similar denoms and subtracts them
 Fraction Fraction::operator-(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
@@ -259,6 +266,7 @@ Fraction Fraction::operator-(const Fraction &other) const {
 	return (temp1);
 }
 
+// Multiplies the fraction's numerator by the int
 Fraction Fraction::operator*(int val) const {
 	Fraction temp;
 	temp.numer = this->numer + (this->wholeNum * this->denom);
@@ -290,6 +298,7 @@ Fraction Fraction::operator*(int val) const {
 	return (temp);
 }
 
+// Multiplies the fractions across
 Fraction Fraction::operator*(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
@@ -311,7 +320,8 @@ Fraction Fraction::operator*(const Fraction &other) const {
 	return (temp1);
 }
 
-// To return nothing just use return {}
+// Gets specific parts of the fraction, returns optional
+// nothing if there is nothing in that part of the fraction
 optional<int> Fraction::operator[](int pos) const {
 	int temp;
 	if (pos == 0) {
@@ -345,6 +355,7 @@ optional<int> Fraction::operator[](int pos) const {
 
 }
 
+// Checks if the first fraction is less than the second one
 bool Fraction::operator<(const Fraction &other) const {
 
 	Fraction temp1 = *this;
@@ -367,17 +378,9 @@ bool Fraction::operator<(const Fraction &other) const {
 	if (temp1.numer < temp2.numer)
 		return (true);
 	return (false);
-	/*if (temp1.isPos == false && temp2.isPos == true)
-	 return (true);
-	 if (temp2.isPos == false && temp1.isPos == true)
-	 return (false);
-	 if ((temp1.numer < temp2.numer) && temp1.isPos == true)
-	 return (true);
-	 if ((temp1.numer < temp2.numer) && temp1.isPos != true)
-	 return (false);*/
-
 }
 
+// Checks if two fractions are equal to each other
 bool Fraction::operator==(const Fraction &other) const {
 	Fraction temp1 = *this;
 	Fraction temp2 = other;
@@ -387,10 +390,7 @@ bool Fraction::operator==(const Fraction &other) const {
 
 	temp2 = temp2.toReduced();
 	temp2 = temp2.toProper();
-	//temp1 = this->toReduced();
-	//temp1 = this->toProper();
-	//temp2 = other.toReduced();
-	//temp2 = other.toProper();
+
 	if ((temp1.isPos == temp2.isPos) && (temp1.numer == temp2.numer)
 			&& (temp1.denom == temp2.denom)
 			&& (temp1.wholeNum == temp2.wholeNum))
@@ -398,7 +398,7 @@ bool Fraction::operator==(const Fraction &other) const {
 	return (false);
 }
 
-// Conversion functions
+// Makes a fraction proper
 void Fraction::makeProper() {
 	if (this->numer >= this->denom) {
 		int temp1 = this->numer / this->denom;
@@ -412,6 +412,7 @@ void Fraction::makeProper() {
 	}
 }
 
+// Returns a new fraction that is the proper version of the original fraction
 Fraction Fraction::toProper() const {
 	Fraction temp = *this;
 	if (temp.numer >= temp.denom) {
@@ -430,15 +431,17 @@ Fraction Fraction::toProper() const {
 	return (temp);
 }
 
+// Reduces a fraction
 void Fraction::reduce() {
 	int tempGCD = __gcd(this->numer, this->denom);
 	this->numer = (this->numer / tempGCD);
 	this->denom = (this->denom / tempGCD);
 }
 
+// Returns a fraction that is the reduced version of the original one
 Fraction Fraction::toReduced() const {
-// Use this syntax for declaring Fractions
 	Fraction temp;
+
 	int tempGCD = __gcd(this->numer, this->denom);
 	temp.numer = (this->numer / tempGCD);
 	temp.denom = (this->denom / tempGCD);
@@ -446,6 +449,7 @@ Fraction Fraction::toReduced() const {
 	return (temp);
 }
 
+// Prints out a fraction
 ostream& Fraction::writeTo(ostream &os) const {
 	string temp;
 	temp += '[';
@@ -468,8 +472,7 @@ ostream& Fraction::writeTo(ostream &os) const {
 	return os;
 }
 
-// You don't want to consume things outside of brackets
-// read character by character, if the first char isn't a left bracket throw an error
+// Reads in a fraction from an istream
 istream& Fraction::readFrom(istream &sr) {
 	this->wholeNum = 0;
 	this->numer = 0;
@@ -484,14 +487,12 @@ istream& Fraction::readFrom(istream &sr) {
 	char ch;
 	int i = 0;
 
-	//"text [3]234"
 	while (sr.peek() != '[') {
 		sr.get();
 		if (sr.fail())
 			throw std::invalid_argument("Must start with [ !");
 	}
-	//if (sr.peek() != ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'))
-	//throw std::invalid_argument("A number must follow!");
+
 
 	sr.get();
 
@@ -522,8 +523,6 @@ istream& Fraction::readFrom(istream &sr) {
 	} else
 		tempWhole = stoi(st);
 
-
-
 	if (sr.peek() == '/') {
 		st = "";
 		while (sr.peek()
@@ -538,16 +537,6 @@ istream& Fraction::readFrom(istream &sr) {
 		tempDenom = stoi(st);
 	}
 
-
-	//For single char whole nums
-	/*
-	 if (st.length() == 0) {
-	 ch -= 48;
-	 tempWhole = ch;
-	 } else {
-	 i = stoi(st);
-	 tempWhole = i;
-	 }*/
 	this->wholeNum = tempWhole;
 	this->numer = tempNum;
 	this->denom = tempDenom;
@@ -555,6 +544,7 @@ istream& Fraction::readFrom(istream &sr) {
 	return (sr);
 }
 
+// Checks if a fraction is in reduced form
 bool Fraction::isReduced() const {
 	if ((__gcd(this->numer, this->denom)) == 1) {
 		return (true);
@@ -562,6 +552,7 @@ bool Fraction::isReduced() const {
 	return (false);
 }
 
+// Checks if a fraction is in proper form
 bool Fraction::isProper() const {
 	if ((this->numer >= this->denom)
 			| (this->wholeNum != 0 && this->numer == 0))
@@ -577,11 +568,3 @@ ostream& operator<<(ostream &os, const Fraction &f) {
 istream& operator>>(istream &s, Fraction &f) {
 	return (f.readFrom(s));
 }
-
-/*
- #if I_DO_EXTRA_CREDIT
- optional<string> Fraction::isRepeating() const { return {}; }
-
- string Fraction::operator()(int len) const { return {}; }
- #endif
- */
