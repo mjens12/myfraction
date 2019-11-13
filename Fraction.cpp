@@ -293,11 +293,12 @@ Fraction Fraction::operator*(int val) const {
 Fraction Fraction::operator*(const Fraction &other) const {
 	Fraction temp1;
 	Fraction temp2;
+
 	temp1 = *this;
 	temp2 = other;
 
-	temp1.numer += temp1.wholeNum * temp1.denom;
-	temp2.numer += temp2.wholeNum * temp2.denom;
+	temp1.numer = temp1.numer + (this->wholeNum * this->denom);
+	temp2.numer = temp2.numer + (other.wholeNum * other.denom);
 
 	temp1.numer = temp1.numer * temp2.numer;
 	temp1.denom = temp1.denom * temp2.denom;
@@ -305,8 +306,8 @@ Fraction Fraction::operator*(const Fraction &other) const {
 		temp1.isPos = true;
 	else
 		temp1.isPos = false;
-	temp1.toReduced();
-	temp1.toProper();
+	temp1 = temp1.toReduced();
+	temp1 = temp1.toProper();
 	return (temp1);
 }
 
@@ -345,34 +346,54 @@ optional<int> Fraction::operator[](int pos) const {
 }
 
 bool Fraction::operator<(const Fraction &other) const {
-	Fraction temp1;
-	Fraction temp2;
-	temp1 = this->toProper();
-	temp2 = other.toProper();
-	temp1.denom = this->denom * other.denom;
-	temp2.denom = this->denom * other.denom;
+
+	Fraction temp1 = *this;
+	Fraction temp2 = other;
+
+	temp1 = *this;
+	temp2 = other;
+
 	temp1.numer *= other.denom;
 	temp2.numer *= this->denom;
-	temp1.numer += this->wholeNum * temp1.denom;
-	temp2.numer += other.wholeNum * temp2.denom;
-	if (temp1.isPos == false && temp2.isPos == true)
+	temp1.denom = this->denom * other.denom;
+	temp2.denom = this->denom * other.denom;
+	temp1.numer += temp1.wholeNum * temp1.denom;
+	temp2.numer += temp2.wholeNum * temp2.denom;
+
+	if (temp1.isPos == false)
+		temp1.numer = 0 - temp1.numer;
+	if (temp2.isPos == false)
+		temp2.numer = 0 - temp2.numer;
+	if (temp1.numer < temp2.numer)
 		return (true);
-	if (temp2.isPos == false && temp1.isPos == true)
-		return (false);
-	if ((temp1.numer < temp2.numer) && temp1.isPos == true)
-		return (true);
-	if ((temp1.numer < temp2.numer) && temp1.isPos != true)
-		return (false);
 	return (false);
+	/*if (temp1.isPos == false && temp2.isPos == true)
+	 return (true);
+	 if (temp2.isPos == false && temp1.isPos == true)
+	 return (false);
+	 if ((temp1.numer < temp2.numer) && temp1.isPos == true)
+	 return (true);
+	 if ((temp1.numer < temp2.numer) && temp1.isPos != true)
+	 return (false);*/
+
 }
 
 bool Fraction::operator==(const Fraction &other) const {
-	Fraction temp1;
-	Fraction temp2;
-	temp1 = this->toProper();
-	temp2 = other.toProper();
-	if (temp1.isPos == temp2.isPos && temp1.numer == temp2.numer
-			&& temp1.denom == temp2.denom && temp1.wholeNum == temp2.wholeNum)
+	Fraction temp1 = *this;
+	Fraction temp2 = other;
+
+	temp1 = temp1.toReduced();
+	temp1 = temp1.toProper();
+
+	temp2 = temp2.toReduced();
+	temp2 = temp2.toProper();
+	//temp1 = this->toReduced();
+	//temp1 = this->toProper();
+	//temp2 = other.toReduced();
+	//temp2 = other.toProper();
+	if ((temp1.isPos == temp2.isPos) && (temp1.numer == temp2.numer)
+			&& (temp1.denom == temp2.denom)
+			&& (temp1.wholeNum == temp2.wholeNum))
 		return (true);
 	return (false);
 }
@@ -400,8 +421,9 @@ Fraction Fraction::toProper() const {
 		temp.numer = temp2;
 	}
 	if ((temp.numer % temp.denom) == 0) {
-		temp.denom = 1;
+
 		temp.numer = 0;
+		temp.denom = 1;
 	}
 	temp.isPos = this->isPos;
 
@@ -457,7 +479,7 @@ istream& Fraction::readFrom(istream &sr) {
 	string st;
 	int tempWhole = 0;
 	int tempNum = 0;
-	int TempDenom = 0;
+	int tempDenom = 1;
 
 	char ch;
 	int i = 0;
@@ -468,11 +490,12 @@ istream& Fraction::readFrom(istream &sr) {
 		if (sr.fail())
 			throw std::invalid_argument("Must start with [ !");
 	}
+	//if (sr.peek() != ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'))
+	//throw std::invalid_argument("A number must follow!");
 
 	sr.get();
-	//ch = sr.get();
 
-	while (sr.peek() != '/') {
+	while (sr.peek() != '/' | sr.peek() != ' ') {
 
 		ch = sr.get();
 		if (ch == '-') {
@@ -482,21 +505,52 @@ istream& Fraction::readFrom(istream &sr) {
 
 		if (sr.fail())
 			break;
+
 		st += ch;
 		if (sr.peek() == ']') {
 			sr.get();
 			break;
 		}
 	}
-	//For single char whole nums
-	if (st.length() == 0) {
-		ch -= 48;
-		tempWhole = ch;
-	} else {
-		i = stoi(st);
-		tempWhole = i;
+	if (sr.peek() == ' ') {
+		tempWhole = stoi(st);
+		st = "";
 	}
+
+	if (sr.peek() == '/') {
+		tempNum = stoi(st);
+	} else
+		tempWhole = stoi(st);
+
+
+
+	if (sr.peek() == '/') {
+		st = "";
+		while (sr.peek()
+				== ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9')) {
+			ch = sr.get();
+			st += ch;
+		}
+		if (sr.peek()
+				!= ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9')) {
+			throw std::invalid_argument("Invalid input after the / !");
+		}
+		tempDenom = stoi(st);
+	}
+
+
+	//For single char whole nums
+	/*
+	 if (st.length() == 0) {
+	 ch -= 48;
+	 tempWhole = ch;
+	 } else {
+	 i = stoi(st);
+	 tempWhole = i;
+	 }*/
 	this->wholeNum = tempWhole;
+	this->numer = tempNum;
+	this->denom = tempDenom;
 
 	return (sr);
 }
